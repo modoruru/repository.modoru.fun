@@ -1,0 +1,3 @@
+repository.modoru.fun {
+    reverse_proxy reposilite:8080
+}

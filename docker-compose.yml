@@ -1,0 +1,44 @@
+services:
+  reposilite:
+    image: dzikoysk/reposilite:3.6.3
+    env_file:
+      - .env
+    environment:
+      - JAVA_OPTS=-Xmx${MEMORY} ${JAVA_COMPOSE_OPTS}
+      - REPOSILITE_OPTS=--port ${PORT:-8080} --shared-configuration=/app/configuration.shared.json ${REPOSILITE_COMPOSE_OPTS}
+    volumes:
+      - reposilite-data:/app/data
+      - ./configuration.shared.json:/app/configuration.shared.json
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    networks:
+      - reposilite-network
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy-data:/data
+      - caddy-config:/config
+    networks:
+      - reposilite-network
+    depends_on:
+      - reposilite
+
+volumes:
+  reposilite-data: {}
+  caddy-data: {}
+  caddy-config: {}
+
+networks:
+  reposilite-network:
+    driver: bridge

@@ -1,0 +1,87 @@
+{
+  "web": {
+    "forwardedIp": "X-Forwarded-For"
+  },
+  "authentication": {
+    "bruteForceProtection": {
+      "enabled": true,
+      "maxAttempts": 10,
+      "banDurationSeconds": 3600
+    },
+    "ldap": {
+      "enabled": false,
+      "ssl": false,
+      "hostname": "ldap.domain.com",
+      "port": 389,
+      "baseDn": "dc=company,dc=com",
+      "searchUserDn": "cn=reposilite,ou=admins,dc=domain,dc=com",
+      "searchUserPassword": "reposilite-admin-secret",
+      "typeAttribute": "person",
+      "userAttribute": "cn",
+      "userFilter": "(&(objectClass=person)(ou=Maven Users))",
+      "userType": "PERSISTENT"
+    }
+  },
+  "maven": {
+    "repositories": [
+      {
+        "id": "releases",
+        "visibility": "PUBLIC",
+        "redeployment": false,
+        "preserveSnapshots": false,
+        "storageProvider": {
+          "type": "fs",
+          "quota": "100%",
+          "mount": "",
+          "maxResourceLockLifetimeInSeconds": 60
+        },
+        "storagePolicy": "PRIORITIZE_UPSTREAM_METADATA",
+        "metadataMaxAge": 0,
+        "proxied": []
+      },
+      {
+        "id": "snapshots",
+        "visibility": "PUBLIC",
+        "redeployment": false,
+        "preserveSnapshots": false,
+        "storageProvider": {
+          "type": "fs",
+          "quota": "100%",
+          "mount": "",
+          "maxResourceLockLifetimeInSeconds": 60
+        },
+        "storagePolicy": "PRIORITIZE_UPSTREAM_METADATA",
+        "metadataMaxAge": 0,
+        "proxied": []
+      },
+      {
+        "id": "private",
+        "visibility": "PRIVATE",
+        "redeployment": false,
+        "preserveSnapshots": false,
+        "storageProvider": {
+          "type": "fs",
+          "quota": "100%",
+          "mount": "",
+          "maxResourceLockLifetimeInSeconds": 60
+        },
+        "storagePolicy": "PRIORITIZE_UPSTREAM_METADATA",
+        "metadataMaxAge": 0,
+        "proxied": []
+      }
+    ]
+  },
+  "statistics": {
+    "enabled": true,
+    "resolvedRequestsInterval": "MONTHLY"
+  },
+  "frontend": {
+    "id": "modoru",
+    "title": "modoru repository",
+    "description": "Public Maven repository hosted through the Reposilite",
+    "organizationWebsite": "https://modoru.fun",
+    "organizationLogo": "https://avatars.githubusercontent.com/u/261841736",
+    "privacyPolicy": "",
+    "icpLicense": ""
+  }
+}
