@@ -2,11 +2,11 @@ name: Deploy to production
 
 on:
   push:
-    branches: [ production ]
+    branches:
+      - "production"
 
 jobs:
   deploy:
-    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to server
@@ -16,4 +16,4 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            /opt/deploy.sh
+            /home/${{ secrets.SERVER_USER }}/deploy.sh
