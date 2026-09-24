@@ -26,7 +26,8 @@ services:
       - 8.8.8.8
       - 8.8.4.4
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./packwiz:/srv/packwiz:ro
       - caddy-data:/data
       - caddy-config:/config
     networks:

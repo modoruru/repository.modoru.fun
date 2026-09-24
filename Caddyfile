@@ -1,3 +1,8 @@
 repository.modoru.fun {
     reverse_proxy reposilite:8080
 }
+
+modpack.modoru.fun {
+    root * /srv/packwiz
+    file_server
+}
