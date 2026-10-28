@@ -34,11 +34,51 @@ services:
       - reposilite-network
     depends_on:
       - reposilite
+  
+
+  vikunja-db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: vikunja
+      POSTGRES_PASSWORD: ${VIKUNJA_DB_PASSWORD:?Set VIKUNJA_DB_PASSWORD in server .env}
+      POSTGRES_DB: vikunja
+    volumes:
+      - vikunja-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - reposilite-network
+
+  vikunja:
+    image: vikunja/vikunja:2
+    restart: unless-stopped
+    depends_on:
+      vikunja-db:
+        condition: service_healthy
+    environment:
+      VIKUNJA_SERVICE_PUBLICURL: https://admin.modoru.fun/
+      VIKUNJA_SERVICE_SECRET: ${VIKUNJA_SERVICE_SECRET:?Set VIKUNJA_SERVICE_SECRET in server .env}
+      VIKUNJA_DATABASE_TYPE: postgres
+      VIKUNJA_DATABASE_HOST: vikunja-db
+      VIKUNJA_DATABASE_PORT: "5432"
+      VIKUNJA_DATABASE_USER: vikunja
+      VIKUNJA_DATABASE_PASSWORD: ${VIKUNJA_DB_PASSWORD:?Set VIKUNJA_DB_PASSWORD in server .env}
+      VIKUNJA_DATABASE_DATABASE: vikunja
+    volumes:
+      - vikunja-files:/app/vikunja/files
+    networks:
+      - reposilite-network
 
 volumes:
   reposilite-data: {}
   caddy-data: {}
   caddy-config: {}
+  vikunja-db-data: {}
+  vikunja-files: {}
 
 networks:
   reposilite-network:

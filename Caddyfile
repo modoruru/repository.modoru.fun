@@ -6,3 +6,7 @@ modpack.modoru.fun {
     root * /srv/packwiz
     file_server
 }
+
+admin.modoru.fun {
+    reverse_proxy vikunja:3456
+}
