@@ -68,6 +68,7 @@ services:
       VIKUNJA_DATABASE_USER: vikunja
       VIKUNJA_DATABASE_PASSWORD: ${VIKUNJA_DB_PASSWORD:?Set VIKUNJA_DB_PASSWORD in server .env}
       VIKUNJA_DATABASE_DATABASE: vikunja
+      VIKUNJA_SERVICE_ENABLEREGISTRATION: "false"
     volumes:
       - vikunja-files:/app/vikunja/files
     networks:
